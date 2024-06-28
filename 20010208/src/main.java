@@ -5,6 +5,7 @@ public class main {
             public void run() {
             	connection.main();
                 new login_page();
+                System.out.println("check");
             }
         });
     }
