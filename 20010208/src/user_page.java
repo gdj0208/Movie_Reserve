@@ -19,33 +19,20 @@ public class user_page extends JFrame implements ActionListener {
     
     private JPanel MainPanel;
     private Top_Panel top_Panel;
-    private Inquiry_Panel InquiryPanel;
+    private Inquiry_Panel Inquiry_Panel;
+    private Schedule_Panel Schedule_Panel;
     // Database connection details
  
     private int width = 800;
     private int height = 600;
 
     public user_page() {
-    	
-    	// 기본적인 페이지의 크기 등 설정 후 생성 
-    	init_page();
-    	
-    	// 메인 패널 생성  
-    	create_main_panel();
-    	
-    	// top panel 생성  
-    	create_top_panel(MainPanel, InquiryPanel);
-    	
-    	// 페이지 생성
-    	create_page();
+    	init_page();									// 기본적인 페이지의 크기 등 설정 후 생성 
+    	create_main_panel();							// 메인 패널 생성  
+    	create_top_panel(MainPanel, Inquiry_Panel);		// top panel 생성  
+    	create_page();									// 페이지 생성
     }
 
-    
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	private void init_page() {
         setTitle("User Page");
@@ -66,10 +53,14 @@ public class user_page extends JFrame implements ActionListener {
 	}
 
 	private void create_page() {
-    	// 매인 패널 추가 
-    	add(MainPanel);
-        
-        // 창 보이게 설정 
-        setVisible(true);
+    	add(MainPanel);			// 매인 패널 추가 
+        setVisible(true);		// 창 보이게 설정 
+	}
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
