@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,6 +17,8 @@ public class Schedule_Panel  extends JPanel implements ActionListener {
 	private JTable table;
     private DefaultTableModel model;
     private JScrollPane scrollPane;
+    private JButton select_button;
+    private Seat_Panel seat_panel;
 
 	boolean first_condition = true;
 	
@@ -25,19 +30,39 @@ public class Schedule_Panel  extends JPanel implements ActionListener {
 	private String movie_actor;
 	private String movie_genre;
 	
+	Object movie_name_obj;
+	Object cinema_obj;
+    Object schedule_day_obj;
+	
+	
     // 기본 초기화 
 	public Schedule_Panel(String movie_name, String movie_director, String movie_actor, String movie_genre) {
 		set_panel();
 		set_search_conditions(movie_name, movie_director, movie_actor,  movie_genre);
-		init_components();
+
+		set_components();
+		add_movie_lists();
+		add_components();
 	}
 	
+	public Schedule_Panel() {
+		set_panel();
+		//init_components();
+		set_components();
+		add_components();
+	}
+
 	
 	public void set_search_conditions(String movie_name, String movie_director, String movie_actor, String movie_genre) {
 		this.movie_name = movie_name;
 		this.movie_director = movie_director;
 		this.movie_actor = movie_actor;
 		this.movie_genre = movie_genre;
+	}
+	
+	public void show_search_lists() {
+		add_movie_lists();
+		add_components();
 	}
 	
 	
@@ -51,14 +76,16 @@ public class Schedule_Panel  extends JPanel implements ActionListener {
 	
 	
 	// 컴포넌트들 설
-	private void init_components() {
-		set_components();
-		add_movie_lists();
-		add_components();
-	}
-	
 	private void set_components() {
-		test = new JLabel("영화 목록");
+		//test = new JLabel("영화 목록");
+		/*
+		select_button = new JButton("선택");
+		select_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 System.out.println(movie_name_obj + " " + cinema_obj + " " + schedule_day_obj);
+			}
+		});
+		*/
 		model = new DefaultTableModel(
 				new String[]{
 						"Name",
@@ -68,7 +95,28 @@ public class Schedule_Panel  extends JPanel implements ActionListener {
 						"Day"
 						}
 				, 0);
+		
 		table = new JTable(model);
+        table.addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent e) {
+        		int row = table.rowAtPoint(e.getPoint());
+                int col = table.columnAtPoint(e.getPoint());
+                int movie_name_col = 0;
+                int cinema_col = 3;
+                int schedule_day_col = 4;
+
+                if (row != -1 && col != -1) { // 유효한 행인지 확인
+                    movie_name_obj = table.getValueAt(row, movie_name_col);
+                    cinema_obj = table.getValueAt(row, cinema_col);
+                    schedule_day_obj = table.getValueAt(row, schedule_day_col);
+
+                    seat_panel = new Seat_Panel(movie_name_obj.toString(), cinema_obj.toString(), schedule_day_obj.toString());
+                    //System.out.println("check1\n");
+                    //System.out.println(movie_name_obj + " " + cinema_obj + " " + schedule_day_obj);
+                }
+            }
+        });
+        
 		scrollPane = new JScrollPane(table);
 		
 		baseQuery = "SELECT db1.movie.movie_name, \n"
@@ -78,13 +126,12 @@ public class Schedule_Panel  extends JPanel implements ActionListener {
 				+ "	db1.schedule.schedule_day\n"
 				+ "FROM db1.movie\n"
 				+ "	INNER JOIN db1.schedule";
-		
 	}
 	
 	private void add_movie_lists() {
 		try {
 			add_conditions_on_query();
-			System.out.print(baseQuery);
+			//System.out.print(baseQuery);
 			ResultSet lists = connection.stmt.executeQuery(baseQuery);
 			
 			while(lists.next()) {
@@ -160,8 +207,9 @@ public class Schedule_Panel  extends JPanel implements ActionListener {
 	
 	
 	private void add_components() {
-		add(test);
+		//add(test);
 		add(scrollPane);
+		//add(select_button);
 	}
 	
 	

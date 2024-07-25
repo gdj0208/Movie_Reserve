@@ -36,7 +36,7 @@ public class user_page extends JFrame implements ActionListener {
 	
 	private void init_page() {
         setTitle("User Page");
-        setBounds(300, 90, 800, 600);
+        setBounds(300, 90, width, height);
         setResizable(false);
 	}
 	

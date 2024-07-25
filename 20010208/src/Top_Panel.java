@@ -7,7 +7,8 @@ public class Top_Panel extends JPanel{
 	
 	private JButton reserveButton, inquiryButton;
 	private JPanel MainPanel;
-	private Inquiry_Panel InquiryPanel;
+	private Inquiry_Panel Inquiry_Panel;
+	private Schedule_Panel Schedule_Panel;
 	
 	public Top_Panel() {
 		set_panel();
@@ -15,7 +16,7 @@ public class Top_Panel extends JPanel{
 		add_buttons();
 	}
 	
-	public void get_inquiry_panel(Inquiry_Panel InquiryPanel) { this.InquiryPanel = InquiryPanel; }
+	public void get_inquiry_panel(Inquiry_Panel InquiryPanel) { this.Inquiry_Panel = InquiryPanel; }
 	public void get_main_panel(JPanel MainPanel) { this.MainPanel = MainPanel;	}
 
 	// 패널 설정 
@@ -41,20 +42,38 @@ public class Top_Panel extends JPanel{
 	
 	private void add_reserve_button_action_listener() {
 		reserveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { show_inquiry_panel(); }
+			public void actionPerformed(ActionEvent e) { 
+				show_schedule_panel();
+				show_inquiry_panel();
+			}
 		});
 	}
 	
 	private void show_inquiry_panel() {
 		
 		// 기존 Inquiry Panel은 지기 
-		if(InquiryPanel != null) { MainPanel.remove(InquiryPanel); } 
+		if(Inquiry_Panel != null) { MainPanel.remove(Inquiry_Panel); } 
 		
 		// 새로운 Inquiry Panel 추가 
-		InquiryPanel = new Inquiry_Panel(MainPanel);
-		MainPanel.add(InquiryPanel, BorderLayout.WEST);
+		Inquiry_Panel = new Inquiry_Panel(MainPanel);
+		Inquiry_Panel.set_schedule_panel(Schedule_Panel);
+		MainPanel.add(Inquiry_Panel, BorderLayout.WEST);
 		
 		// MainPanel 다시 그리기 
+		MainPanel.revalidate();
+		MainPanel.repaint();
+	}
+	
+	private void show_schedule_panel() {
+		// 기존 Inquiry Panel은 지기 
+		if(Schedule_Panel != null) { MainPanel.remove(Schedule_Panel); } 
+				
+		// 새로운 Inquiry Panel 추가 
+		Schedule_Panel = new Schedule_Panel();
+		//Schedule_Panel.show_search_lists();
+		MainPanel.add(Schedule_Panel, BorderLayout.CENTER);
+						
+				// MainPanel 다시 그리기 
 		MainPanel.revalidate();
 		MainPanel.repaint();
 	}

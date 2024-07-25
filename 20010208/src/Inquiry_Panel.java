@@ -45,7 +45,7 @@ public class Inquiry_Panel extends JPanel implements ActionListener {
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 	}
-	
+	public void set_schedule_panel(Schedule_Panel Schedule_Panel) { this.Schedule_Panel = Schedule_Panel; }
 	
 	
 	private void init_components() {
@@ -61,7 +61,9 @@ public class Inquiry_Panel extends JPanel implements ActionListener {
 		search_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				get_field_datas();
-				show_schedule_panel();
+				Schedule_Panel.set_search_conditions(movie_name, movie_director, movie_actor, movie_genre);
+				Schedule_Panel.show_search_lists();
+				//show_schedule_panel();
 			}
 		});
 	}
